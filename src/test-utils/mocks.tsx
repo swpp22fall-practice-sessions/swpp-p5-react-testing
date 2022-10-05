@@ -1,9 +1,14 @@
 import { configureStore, PreloadedState } from "@reduxjs/toolkit";
-import { render } from "@testing-library/react";
+import { render, RenderOptions } from "@testing-library/react";
 import { PropsWithChildren } from "react";
 import { Provider } from "react-redux";
-import { RootState } from "../store";
+import { AppStore, RootState } from "../store";
 import todoReducer from "../store/slices/todo";
+
+interface ExtendedRenderOptions extends Omit<RenderOptions, "queries"> {
+    preloadedState?: PreloadedState<RootState>;
+    store?: AppStore;
+  }
 
 export const getMockStore = (preloadedState?: PreloadedState<RootState>) => {
     return configureStore({
