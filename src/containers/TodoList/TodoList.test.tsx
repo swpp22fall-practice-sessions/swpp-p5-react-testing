@@ -22,24 +22,9 @@ jest.mock("../../components/Todo/Todo", () => (props: TodoProps) => (
 
 const stubInitialState: TodoState = {
   todos: [
-    {
-      id: 1,
-      title: "TODO_TEST_TITLE_1",
-      content: "TODO_TEST_CONTENT_1",
-      done: false,
-    },
-    {
-      id: 2,
-      title: "TODO_TEST_TITLE_2",
-      content: "TODO_TEST_CONTENT_2",
-      done: false,
-    },
-    {
-      id: 3,
-      title: "TODO_TEST_TITLE_3",
-      content: "TODO_TEST_CONTENT_3",
-      done: false,
-    },
+    { id: 1, title: "TODO_TEST_TITLE_1", content: "TODO_TEST_CONTENT_1", done: false },
+    { id: 2, title: "TODO_TEST_TITLE_2", content: "TODO_TEST_CONTENT_2", done: false },
+    { id: 3, title: "TODO_TEST_TITLE_3", content: "TODO_TEST_CONTENT_3", done: false },
   ],
   selectedTodo: null,
 };
@@ -64,10 +49,7 @@ describe("<TodoList />", () => {
       <Provider store={mockStore}>
         <MemoryRouter>
           <Routes>
-            <Route
-              path="/"
-              element={<TodoList title="TODOLIST_TEST_TITLE" />}
-            />
+            <Route path="/" element={<TodoList title="TODOLIST_TEST_TITLE" />} />
           </Routes>
         </MemoryRouter>
       </Provider>

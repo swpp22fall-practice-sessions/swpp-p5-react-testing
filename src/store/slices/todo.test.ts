@@ -2,13 +2,7 @@ import { AnyAction, configureStore, EnhancedStore } from "@reduxjs/toolkit";
 import axios from "axios";
 import { ThunkMiddleware } from "redux-thunk";
 import reducer, { TodoState } from "./todo";
-import {
-  fetchTodos,
-  fetchTodo,
-  postTodo,
-  deleteTodo,
-  toggleDone,
-} from "./todo";
+import { fetchTodos, fetchTodo, postTodo, deleteTodo, toggleDone } from "./todo";
 describe("todo reducer", () => {
   let store: EnhancedStore<
     { todo: TodoState },
@@ -58,9 +52,7 @@ describe("todo reducer", () => {
       data: fakeTodo,
     });
     await store.dispatch(toggleDone(fakeTodo.id));
-    expect(
-      store.getState().todo.todos.find((v) => v.id === fakeTodo.id)?.done
-    ).toEqual(true);
+    expect(store.getState().todo.todos.find((v) => v.id === fakeTodo.id)?.done).toEqual(true);
   });
   it("should handle error on postTodo", async () => {
     const mockConsoleError = jest.fn();

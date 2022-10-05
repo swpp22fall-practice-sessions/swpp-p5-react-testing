@@ -1,75 +1,81 @@
-import React from "react";
-import { shallow, mount } from "enzyme";
-import { Provider } from "react-redux";
-import { connectRouter, ConnectedRouter } from "connected-react-router";
-import { Route, Redirect, Routes } from "react-router-dom";
+import { fireEvent, screen, waitFor } from "@testing-library/react";
+import axios from "axios";
 
 import NewTodo from "./NewTodo";
-import { getMockStore } from "../../test-utils/mock";
-import { history } from "../../../store/store";
-import * as actionCreators from "../../../store/actions/todo";
+import { renderWithProviders } from "../../../test-utils/mock";
+import * as todoSlice from "../../../store/slices/todo";
 
-const stubInitialState = {
-  todos: [
-    { id: 1, title: "TODO_TEST_TITLE_1", done: false },
-    { id: 2, title: "TODO_TEST_TITLE_2", done: false },
-    { id: 3, title: "TODO_TEST_TITLE_3", done: false },
-  ],
-  selectedTodo: null,
-};
-
-const mockStore = getMockStore(stubInitialState);
+const mockNavigate = jest.fn();
+jest.mock("react-router", () => ({
+  ...jest.requireActual("react-router"),
+  Navigate: (props: any) => {
+    mockNavigate(props.to);
+    return null;
+  },
+  useNavigate: () => mockNavigate,
+}));
 
 describe("<NewTodo />", () => {
-  let newTodo: any;
+  it("should render without errors", () => {
+    renderWithProviders(<NewTodo />);
+    screen.getByText("Add a Todo");
+  });
+  it("should render title input", () => {
+    renderWithProviders(<NewTodo />);
+    screen.getByLabelText("Title");
+  });
+  it("should render content input", () => {
+    renderWithProviders(<NewTodo />);
+    screen.getByLabelText("Content");
+  });
+  it("should render submit button", () => {
+    renderWithProviders(<NewTodo />);
+    screen.getByText("Submit");
+  });
+  it("should render navigate to /todos when submitted", async () => {
+    jest.spyOn(axios, "post").mockResolvedValueOnce({
+      data: {
+        id: 1,
+        title: "TITLE",
+        content: "CONTENT",
+        done: false,
+      },
+    });
+    renderWithProviders(<NewTodo />);
+    const titleInput = screen.getByLabelText("Title");
+    const contentInput = screen.getByLabelText("Content");
+    const submitButton = screen.getByText("Submit");
+    fireEvent.change(titleInput, { target: { value: "TITLE" } });
+    fireEvent.change(contentInput, { target: { value: "CONTENT" } });
+    await screen.findByDisplayValue("TITLE");
+    await screen.findByDisplayValue("CONTENT");
+    fireEvent.click(submitButton);
+    await waitFor(() => expect(mockNavigate).toHaveBeenCalledWith("/todos"));
+  });
+  it("should alert error when submitted", async () => {
+    const mockPostTodo = jest.spyOn(todoSlice, "postTodo");
+    window.alert = jest.fn();
+    console.error = jest.fn();
+    jest.spyOn(axios, "post").mockRejectedValueOnce(new Error("ERROR"));
+    renderWithProviders(<NewTodo />);
+    const titleInput = screen.getByLabelText("Title");
+    const contentInput = screen.getByLabelText("Content");
+    const submitButton = screen.getByText("Submit");
+    fireEvent.change(titleInput, { target: { value: "TITLE" } });
+    fireEvent.change(contentInput, { target: { value: "CONTENT" } });
 
-  beforeEach(() => {
-    newTodo = (
-      <Provider store={mockStore}>
-        <ConnectedRouter history={history}>
-          <Routes>
-            <Route path="/" element={<NewTodo />} />
-          </Routes>
-        </ConnectedRouter>
-      </Provider>
+    await screen.findByDisplayValue("TITLE");
+    await screen.findByDisplayValue("CONTENT");
+    fireEvent.click(submitButton);
+
+    expect(mockPostTodo).toHaveBeenCalledWith({
+      title: "TITLE",
+      content: "CONTENT",
+    });
+    await waitFor(() => expect(mockNavigate).not.toHaveBeenCalled());
+    await waitFor(() =>
+      expect(window.alert).toHaveBeenCalledWith("Error on post Todo")
     );
   });
-
-  it("should render NewTodo", () => {
-    const component = mount(newTodo);
-    const wrapper = component.find(".NewTodo");
-    expect(wrapper.length).toBe(1);
-  });
-
-  it(`should call 'postTodo'`, () => {
-    const spyPostTodo = jest
-      .spyOn(actionCreators, "postTodo")
-      .mockImplementation((td) => {
-        return (dispatch) => {};
-      });
-    const component = mount(newTodo);
-    const wrapper = component.find("button");
-    wrapper.simulate("click");
-    expect(spyPostTodo).toHaveBeenCalledTimes(1);
-  });
-
-  it(`should set state properly on title input`, () => {
-    const title = "TEST_TITLE";
-    const component = mount(newTodo);
-    const wrapper = component.find("input");
-    wrapper.simulate("change", { target: { value: title } });
-    const newTodoInstance = component.find(NewTodo.WrappedComponent).instance();
-    expect(newTodoInstance.state.title).toEqual(title);
-    expect(newTodoInstance.state.content).toEqual("");
-  });
-
-  it(`should set state properly on content input`, () => {
-    const content = "TEST_CONTENT";
-    const component = mount(newTodo);
-    const wrapper = component.find("textarea");
-    wrapper.simulate("change", { target: { value: content } });
-    const newTodoInstance = component.find(NewTodo.WrappedComponent).instance();
-    expect(newTodoInstance.state.title).toEqual("");
-    expect(newTodoInstance.state.content).toEqual(content);
-  });
 });
+// should review

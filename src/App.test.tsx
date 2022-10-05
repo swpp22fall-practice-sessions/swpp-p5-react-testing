@@ -1,4 +1,5 @@
-import { render, screen } from "@testing-library/react";
+// import { render, screen } from "@testing-library/react";
+import { render } from "@testing-library/react";
 import { Provider } from "react-redux";
 
 import App from "./App";
@@ -10,6 +11,6 @@ test("renders App.tsx", () => {
       <App />
     </Provider>
   );
-  screen.debug();
-  //expect(true).toBe(false);
+  //screen.debug();
+  //expect(true).toBe(false); // This make failing test case
 });
