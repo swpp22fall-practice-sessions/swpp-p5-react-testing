@@ -15,10 +15,8 @@ const renderTodoDetail = () => {
         {
         preloadedState: {
             todo: {
-            todos: [
-                { id: 3, title: "TODO_TEST_TITLE_3", content: "TODO_TEST_CONTENT_3", done: false },
-            ],
-            selectedTodo: null,
+                todos: [{ id: 3, title: "TODO_TEST_TITLE_3", content: "TODO_TEST_CONTENT_3", done: false },],
+                selectedTodo: null,
             },
         },
         }
@@ -27,15 +25,13 @@ const renderTodoDetail = () => {
 
 describe("<TodoDetail />", () => {
     it("should render without errors", async () => {
-        jest.spyOn(axios, "get").mockImplementation(() => {
-        return Promise.resolve({
+        axios.get = jest.fn().mockResolvedValue({
             data: {
-            id: 3,
-            title: "TODO_TEST_TITLE_3",
-            content: "TODO_TEST_CONTENT_3",
-            done: false,
+                id: 3,
+                title: "TODO_TEST_TITLE_3",
+                content: "TODO_TEST_CONTENT_3",
+                done: false,
             },
-        });
         });
         renderTodoDetail();
         await screen.findByText("TODO_TEST_TITLE_3");
@@ -43,8 +39,8 @@ describe("<TodoDetail />", () => {
     });
 
     it("should not render if there is no todo", async () => {
+        axios.get = jest.fn().mockResolvedValue({data: null});
         renderTodoDetail();
-        jest.spyOn(axios, "get").mockImplementationOnce(() => Promise.reject());
-        expect(screen.queryAllByText("TODO_TEST_TITLE_3")).toHaveLength(0);
+        expect(screen.queryByText("TODO_TEST_TITLE_3")).toEqual(null);
     });
 });

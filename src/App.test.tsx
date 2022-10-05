@@ -5,5 +5,4 @@ import { store } from "./store";
 
 test("renders App.tsx", () => {
   render(<Provider store={store}><App /></Provider>);
-  screen.debug();
 });
