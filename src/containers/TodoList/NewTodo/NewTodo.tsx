@@ -12,14 +12,6 @@ export default function NewTodo() {
   const [submitted, setSubmitted] = useState<boolean>(false);
   const dispatch = useDispatch<AppDispatch>();
 
-  // const navigate = useNavigate()
-  // const postTodoHandler = () => {
-  //   const data = { title: title, content: content };
-  //   alert("Submitted\n" + data.title + "\n" + data.content);
-  //   setSubmitted(true);
-  //   navigate('/todos')
-  // };
-
   const postTodoHandler = async () => {
     const data = { title: title, content: content };
     const result = await dispatch(postTodo(data));
