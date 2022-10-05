@@ -11,6 +11,8 @@ test("renders App.tsx", () => {
       <App />
     </Provider>
   );
+
+  
   // screen.debug();
   //expect(true).toBe(false); // This make failing test case
 });

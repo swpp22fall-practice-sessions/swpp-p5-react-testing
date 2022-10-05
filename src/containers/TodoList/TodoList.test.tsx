@@ -18,6 +18,8 @@ jest.mock("../../components/Todo/Todo", () => (props: TodoProps) => (
       delete
     </button>
   </div>
+
+
 ));
 
 const stubInitialState: TodoState = {
@@ -26,6 +28,7 @@ const stubInitialState: TodoState = {
     { id: 2, title: "TODO_TEST_TITLE_2", content: "TODO_TEST_CONTENT_2", done: false },
     { id: 3, title: "TODO_TEST_TITLE_3", content: "TODO_TEST_CONTENT_3", done: false },
   ],
+  
   selectedTodo: null,
 };
 const mockStore = getMockStore({ todo: stubInitialState });
