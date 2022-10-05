@@ -3,6 +3,8 @@ import {getMockStore} from "../../test-utils/mocks";
 import {MemoryRouter, Route, Routes} from "react-router";
 import TodoList from "../../containers/TodoList/TodoList";
 import {Provider} from "react-redux";
+import {render} from "@testing-library/react";
+import TodoDetail from "./TodoDetail";
 
 
 const stubInitialState: TodoState = {
@@ -11,8 +13,7 @@ const stubInitialState: TodoState = {
     { id: 2, title: "TODO_TEST_TITLE_2", content: "TODO_TEST_CONTENT_2", done: false },
     { id: 3, title: "TODO_TEST_TITLE_3", content: "TODO_TEST_CONTENT_3", done: false },
   ],
-  selectedTodo:
-    { id: 3, title: "TODO_TEST_TITLE_3", content: "TODO_TEST_CONTENT_3", done: false },
+  selectedTodo: { id: 3, title: "TODO_TEST_TITLE_3", content: "TODO_TEST_CONTENT_3", done: false },
 };
 
 const mockStore = getMockStore({ todo: stubInitialState });
@@ -31,10 +32,14 @@ describe("<TodoDetail/>", () => {
       <Provider store={mockStore}>
       <MemoryRouter>
         <Routes>
-          <Route path="/" element={<TodoList title="TODOLIST_TEST_TITLE" />} />
+          <Route path="/" element={<TodoDetail/>} />
       </Routes>
       </MemoryRouter>
       </Provider>
     )
-  })
+  });
+  it("should render TodoDetail", () => {
+    const {container} = render(todoDetail);
+    expect(container).toBeTruthy();
+  });
 })
