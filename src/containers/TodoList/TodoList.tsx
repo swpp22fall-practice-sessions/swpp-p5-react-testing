@@ -7,13 +7,16 @@ import {
   selectTodo,
   toggleDone,
   deleteTodo,
+
 } from "../../store/slices/todo";
 import "./TodoList.css";
 import { AppDispatch } from "../../store";
 
+
 interface IProps {
   title: string;
 }
+
 
 type TodoType = { id: number; title: string; content: string; done: boolean };
 
@@ -52,5 +55,6 @@ export default function TodoList(props: IProps) {
         <NavLink to="/new-todo">New Todo</NavLink>
       </div>
     </div>
+    
   );
 }
