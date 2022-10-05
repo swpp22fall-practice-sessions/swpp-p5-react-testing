@@ -1,45 +1,50 @@
-import { fireEvent, render, screen } from "@testing-library/react";
-import { Provider } from "react-redux";
-import { MemoryRouter, Route, Routes } from "react-router";
-import { store } from "../../store";
-import { TodoState } from "../../store/slices/todo";
-import { getMockStore } from "../../test-utils/mocks";
+import { screen } from "@testing-library/react";
+import axios from "axios";
+import { MemoryRouter, Navigate, Route, Routes } from "react-router";
+import { renderWithProviders } from "../../test-utils/mocks";
 import TodoDetail from "./TodoDetail";
 
-const stubInitialState: TodoState = {
-    todos: [
-        { id: 1, title: "TODO_TEST_TITLE_1", content: "TODO_TEST_CONTENT_1", done: false },
-    ],
-    selectedTodo: { id: 1, title: "TODO_TEST_TITLE_1", content: "TODO_TEST_CONTENT_1", done: false },
+const renderTodoDetail = () => {
+    renderWithProviders(
+        <MemoryRouter>
+        <Routes>
+            <Route path="/todo-detail/:id" element={<TodoDetail />} />
+            <Route path="*" element={<Navigate to={"/todo-detail/3"} />} />
+        </Routes>
+        </MemoryRouter>,
+        {
+        preloadedState: {
+            todo: {
+            todos: [
+                { id: 3, title: "TODO_TEST_TITLE_3", content: "TODO_TEST_CONTENT_3", done: false },
+            ],
+            selectedTodo: null,
+            },
+        },
+        }
+    );
 };
-const mockStore = getMockStore({ todo: stubInitialState });
 
-describe("<TodoList />", () => {
-    let todoList: JSX.Element;
-    beforeEach(() => {
-        jest.clearAllMocks();
-        todoList = (
-            <Provider store={mockStore}>
-                <div data-testid="spyTodoDetail">
-                    <div className="row">
-                        <div className="left">Name:</div>
-                        <div className="right">{store.getState().todo.selectedTodo?.title}</div>
-                    </div>
-                    <div className="row">
-                        <div className="left">Content:</div>
-                        <div className="right">{store.getState().todo.selectedTodo?.content}</div>
-                    </div>
-                </div>
-            </Provider>
-        );
+describe("<TodoDetail />", () => {
+    it("should render without errors", async () => {
+        jest.spyOn(axios, "get").mockImplementation(() => {
+        return Promise.resolve({
+            data: {
+            id: 3,
+            title: "TODO_TEST_TITLE_3",
+            content: "TODO_TEST_CONTENT_3",
+            done: false,
+            },
+        });
+        });
+        renderTodoDetail();
+        await screen.findByText("TODO_TEST_TITLE_3");
+        await screen.findByText("TODO_TEST_CONTENT_3");
     });
-    it("should render TodoDetail", () => {
-        const { container } = render(todoList);
-        expect(container).toBeTruthy();
-    });
-    it("should return error", () => {
-        render(todoList);
-        const todos = screen.getAllByTestId("spyTodo");
-        expect(todos).toHaveLength(3);
+
+    it("should not render if there is no todo", async () => {
+        renderTodoDetail();
+        jest.spyOn(axios, "get").mockImplementationOnce(() => Promise.reject());
+        expect(screen.queryAllByText("TODO_TEST_TITLE_3")).toHaveLength(0);
     });
 });
