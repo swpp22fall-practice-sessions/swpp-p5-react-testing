@@ -8,6 +8,5 @@ test("renders App.tsx", () => {
   render(
     <Provider store ={store}><App /></Provider>
   );
-  screen.debug();
-  expect(true).toBe(true);
+  // screen.debug();
 });
