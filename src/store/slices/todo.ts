@@ -60,13 +60,10 @@ export const todoSlice = createSlice({
   name: "todo",
   initialState,
   reducers: {
-    getAll: (state, action: PayloadAction<{ todos: TodoType[] }>) => {},
-    getTodo: (state, action: PayloadAction<{ targetId: number }>) => {
-      const target = state.todos.find((td) => td.id === action.payload.targetId);
-      state.selectedTodo = target ?? null;
-    },
     toggleDone: (state, action: PayloadAction<{ targetId: number }>) => {
-      const todo = state.todos.find((value) => value.id === action.payload.targetId);
+      const todo = state.todos.find(
+        (value) => value.id === action.payload.targetId
+      );
       if (todo) {
         todo.done = !todo.done;
       }
@@ -77,7 +74,10 @@ export const todoSlice = createSlice({
       });
       state.todos = deleted;
     },
-    addTodo: (state, action: PayloadAction<{ id: number; title: string; content: string }>) => {
+    addTodo: (
+      state,
+      action: PayloadAction<{ id: number; title: string; content: string }>
+    ) => {
       const newTodo = {
         id: action.payload.id,
         title: action.payload.title,
