@@ -75,5 +75,23 @@ describe("<TodoList/>", () => {
         const title = todo.querySelector(".title");
         fireEvent.click(title!);
         expect(mockNavigate).toHaveBeenCalledTimes(1);
+    });
+
+    it("should handle clickDone", () =>{
+        render(todoList);
+        const todos = screen.getAllByTestId("spyTodo");
+        const todo = todos[0];
+        const doneButton = todo.querySelector(".doneButton");
+        fireEvent.click(doneButton!);
+        expect(mockDispatch).toHaveBeenCalled();
+    });
+
+    it("should handle clickDelete", () => {
+        render(todoList);
+        const todos = screen.getAllByTestId("spyTodo");
+        const todo = todos[0];
+        const deleteButton = todo.querySelector(".deleteButton");
+        fireEvent.click(deleteButton!);
+        expect(mockDispatch).toHaveBeenCalled();
     })
 });
