@@ -2,7 +2,7 @@ import { fireEvent, render, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { MemoryRouter, Route, Routes } from "react-router";
 import { TodoState } from "../../store/slices/todo";
-import { getMockStore } from "../../test-utils/mocks";
+import { getMockStore } from "../../test-utils/mock";
 import TodoList from "./TodoList";
 import { IProps as TodoProps } from "../../components/Todo/Todo";
 
@@ -29,13 +29,13 @@ const stubInitialState: TodoState = {
             done: false,
         },
         {
-            id: 1,
+            id: 2,
             title: "TODO_TEST_TITLE_2",
             content: "TODO_TEST_CONTENT_2",
             done: false,
         },
         {
-            id: 1,
+            id: 3,
             title: "TODO_TEST_TITLE_3",
             content: "TODO_TEST_CONTENT_3",
             done: false,

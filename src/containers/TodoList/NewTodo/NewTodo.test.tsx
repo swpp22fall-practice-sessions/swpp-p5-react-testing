@@ -2,7 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import axios from "axios";
 import * as todoSlice from "../../../store/slices/todo";
-import { renderWithProviders } from "../../../test-utils/mocks";
+import { renderWithProviders } from "../../../test-utils/mock";
 import NewTodo from "./NewTodo";
 
 const mockNavigate = jest.fn();
@@ -16,11 +16,8 @@ jest.mock("react-router", () => ({
 }));
 
 describe("<NewTodo />", () => {
-    afterEach(() => {
-        jest.clearAllMocks();
-    });
     it("should render without error", async () => {
-        render(<NewTodo />);
+        renderWithProviders(<NewTodo />);
         screen.getByText("Add a Todo");
         screen.getByLabelText("Title");
         screen.getByLabelText("Content");
@@ -49,24 +46,28 @@ describe("<NewTodo />", () => {
         );
     });
     it("should error when unsuccessful PostTodoHandler", async () => {
+        const mockPostTodo = jest.spyOn(todoSlice, "postTodo");
         window.alert = jest.fn();
         console.error = jest.fn();
-        jest.spyOn(axios, "post").mockRejectedValue(new Error("error"));
-        render(<NewTodo />);
-        const mockPostTodo = jest.spyOn(todoSlice, "postTodo");
-        const title = screen.getByLabelText("Title");
-        fireEvent.change(title, { target: { value: "Title" } });
-        screen.findByDisplayValue("Title");
-        const content = screen.getByLabelText("Content");
-        fireEvent.change(content, { target: { value: "Content" } });
-        screen.findByDisplayValue("Content");
-        const doneButton = screen.getByText("Submit");
-        fireEvent.click(doneButton!);
-        expect(mockNavigate).not.toHaveBeenCalled();
+        jest.spyOn(axios, "post").mockRejectedValueOnce(new Error("ERROR"));
+        renderWithProviders(<NewTodo />);
+        const titleInput = screen.getByLabelText("Title");
+        const contentInput = screen.getByLabelText("Content");
+        const submitButton = screen.getByText("Submit");
+        fireEvent.change(titleInput, { target: { value: "TITLE" } });
+        fireEvent.change(contentInput, { target: { value: "CONTENT" } });
+
+        await screen.findByDisplayValue("TITLE");
+        await screen.findByDisplayValue("CONTENT");
+        fireEvent.click(submitButton);
+
         expect(mockPostTodo).toHaveBeenCalledWith({
-            title: "Title",
-            content: "Content",
+            title: "TITLE",
+            content: "CONTENT",
         });
-        expect(window.alert).toHaveBeenCalledWith("Error on post Todo");
+        await waitFor(() => expect(mockNavigate).not.toHaveBeenCalled());
+        await waitFor(() =>
+            expect(window.alert).toHaveBeenCalledWith("Error on post Todo")
+        );
     });
 });

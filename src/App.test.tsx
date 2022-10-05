@@ -10,6 +10,4 @@ test("renders Apps.tsx", () => {
             <App />
         </Provider>
     );
-    screen.debug();
-    expect(true).toBe(false);
 });
