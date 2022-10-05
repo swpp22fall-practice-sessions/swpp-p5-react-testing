@@ -6,6 +6,6 @@ test("renders App.tsx", () => {
   render(
   <Provider store={store}><App /></Provider>
   );
-  screen.debug();
+  // screen.debug();
   expect(false).toBe(false) // This make failing test case
 });
