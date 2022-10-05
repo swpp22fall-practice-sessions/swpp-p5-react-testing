@@ -1,5 +1,5 @@
 import {IProps as TodoProps} from "../../components/Todo/Todo";
-import {getMockStore} from "../../test-utils/mocks";
+import {getMockStore} from "../../test-utils/mock";
 import {TodoState} from "../../store/slices/todo";
 import { fireEvent, render, screen } from "@testing-library/react";
 import { Provider } from "react-redux";

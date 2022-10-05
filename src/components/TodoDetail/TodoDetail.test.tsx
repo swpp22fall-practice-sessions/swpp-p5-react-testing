@@ -1,5 +1,5 @@
 import {TodoState} from "../../store/slices/todo";
-import {getMockStore} from "../../test-utils/mocks";
+import {getMockStore} from "../../test-utils/mock";
 import {MemoryRouter, Route, Routes} from "react-router";
 import TodoList from "../../containers/TodoList/TodoList";
 import {Provider} from "react-redux";
