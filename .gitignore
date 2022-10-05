@@ -24,3 +24,4 @@ yarn-error.log*
 
 # sqlite
 db.sqlite3
+.prettierrc
