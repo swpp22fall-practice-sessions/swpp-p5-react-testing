@@ -24,3 +24,5 @@ yarn-error.log*
 
 # sqlite
 db.sqlite3
+
+.bash_history
