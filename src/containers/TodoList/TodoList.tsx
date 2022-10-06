@@ -11,7 +11,7 @@ import {
 import "./TodoList.css";
 import { AppDispatch } from "../../store";
 
-interface IProps {
+export interface IProps {
   title: string;
 }
 
