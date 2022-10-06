@@ -25,46 +25,41 @@ export const fetchTodos = createAsyncThunk("todo/fetchTodos", async () => {
 });
 
 export const fetchTodo = createAsyncThunk(
-  "todo/fetchTodo",
-  async (id: TodoType["id"], { dispatch }) => {
-    const response = await axios.get(`/api/todo/${id}/`);
-    return response.data ?? null;
-  }
+    "todo/fetchTodo",
+    async (id: TodoType["id"], { dispatch }) => {
+      const response = await axios.get(`/api/todo/${id}/`);
+      return response.data ?? null;
+    }
 );
 
 export const postTodo = createAsyncThunk(
-  "todo/postTodo",
-  async (td: Pick<TodoType, "title" | "content">, { dispatch }) => {
-    const response = await axios.post("/api/todo/", td);
-    dispatch(todoActions.addTodo(response.data));
-  }
+    "todo/postTodo",
+    async (td: Pick<TodoType, "title" | "content">, { dispatch }) => {
+      const response = await axios.post("/api/todo/", td);
+      dispatch(todoActions.addTodo(response.data));
+    }
 );
 
 export const deleteTodo = createAsyncThunk(
-  "todo/deleteTodo",
-  async (id: TodoType["id"], { dispatch }) => {
-    await axios.delete(`/api/todo/${id}/`);
-    dispatch(todoActions.deleteTodo({ targetId: id }));
-  }
+    "todo/deleteTodo",
+    async (id: TodoType["id"], { dispatch }) => {
+      await axios.delete(`/api/todo/${id}/`);
+      dispatch(todoActions.deleteTodo({ targetId: id }));
+    }
 );
 
 export const toggleDone = createAsyncThunk(
-  "todo/toggleDone",
-  async (id: TodoType["id"], { dispatch }) => {
-    await axios.put(`/api/todo/${id}/`);
-    dispatch(todoActions.toggleDone({ targetId: id }));
-  }
+    "todo/toggleDone",
+    async (id: TodoType["id"], { dispatch }) => {
+      await axios.put(`/api/todo/${id}/`);
+      dispatch(todoActions.toggleDone({ targetId: id }));
+    }
 );
 
 export const todoSlice = createSlice({
   name: "todo",
   initialState,
   reducers: {
-    getAll: (state, action: PayloadAction<{ todos: TodoType[] }>) => {},
-    getTodo: (state, action: PayloadAction<{ targetId: number }>) => {
-      const target = state.todos.find((td) => td.id === action.payload.targetId);
-      state.selectedTodo = target ?? null;
-    },
     toggleDone: (state, action: PayloadAction<{ targetId: number }>) => {
       const todo = state.todos.find((value) => value.id === action.payload.targetId);
       if (todo) {
