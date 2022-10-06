@@ -1,11 +1,11 @@
-import { configureStore, PreloadedState } from "@reduxjs/toolkit";
-import { render, RenderOptions } from "@testing-library/react";
-import { PropsWithChildren } from "react";
-import { Provider } from "react-redux";
-import { AppStore, RootState } from "../store";
+import {configureStore, PreloadedState} from "@reduxjs/toolkit";
+import {render, RenderOptions} from "@testing-library/react";
+import {PropsWithChildren} from "react";
+import {Provider} from "react-redux";
+import {AppStore, RootState} from "../store";
 import todoReducer from "../store/slices/todo";
 
-interface ExtendedRenderOptions extends Omit<RenderOptions, "queries"> {
+interface ExtendedRenderOptions extends Omit<RenderOptions, "queries">{
   preloadedState?: PreloadedState<RootState>;
   store?: AppStore;
 }
@@ -23,11 +23,11 @@ export function renderWithProviders(
     preloadedState,
     store = getMockStore(preloadedState),
     ...renderOptions
-  }: ExtendedRenderOptions = {}
+  }:ExtendedRenderOptions = {}
 ) {
-  function Wrapper({ children }: PropsWithChildren): JSX.Element {
+  function Wrapper({ children }: PropsWithChildren): JSX.Element{
     return <Provider store={store}>{children}</Provider>;
   }
-  return { store, ...render(ui, { wrapper: Wrapper, ...renderOptions }) };
+  return {store, ...render(ui, { wrapper: Wrapper, ...renderOptions })};
 }
 
