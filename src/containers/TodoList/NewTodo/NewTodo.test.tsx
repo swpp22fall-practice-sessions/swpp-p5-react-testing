@@ -2,6 +2,7 @@ import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import axios from "axios";
 import { Provider } from "react-redux";
 import { MemoryRouter, Route, Routes } from "react-router";
+import { todoSlice } from "../../../store/slices/todo";
 import { getMockStore } from "../../../test-utils/mocks";
 import NewTodo from "./NewTodo";
 const mockNavigate = jest.fn();
@@ -48,5 +49,24 @@ describe("<TodoList />", () => {
     await screen.findByDisplayValue("CONTENT");
     fireEvent.click(submitButton);
     await waitFor(() => expect(mockNavigate).toHaveBeenCalledWith("/todos"));
+  });
+  it("should alert error when submitted", async () => {
+    window.alert = jest.fn();
+    console.error = jest.fn();
+    jest.spyOn(axios, "post").mockRejectedValueOnce(new Error());
+    render(newTodo);
+    const titleInput = screen.getByLabelText("Title");
+    const contentInput = screen.getByLabelText("Content");
+    const submitButton = screen.getByText("Submit");
+    fireEvent.change(titleInput, { target: { value: "TITLE" } });
+    fireEvent.change(contentInput, { target: { value: "CONTENT" } });
+    await screen.findByDisplayValue("TITLE");
+    await screen.findByDisplayValue("CONTENT");
+    fireEvent.click(submitButton);
+
+    await waitFor(() => expect(mockNavigate).not.toHaveBeenCalled());
+    await waitFor(() =>
+      expect(window.alert).toHaveBeenCalledWith("Error on post Todo")
+    );
   });
 });

@@ -71,4 +71,12 @@ describe("todo reducer", () => {
     await store.dispatch(fetchTodo(1));
     expect(store.getState().todo.selectedTodo).toEqual(null);
   });
+  it("should handle not existing todo toggle", async () => {
+    const beforeState = store.getState().todo;
+    jest.spyOn(axios, "put").mockResolvedValue({
+      data: { ...fakeTodo, id: 10 },
+    });
+    await store.dispatch(toggleDone(2));
+    expect(store.getState().todo).toEqual(beforeState);
+  });
 });
