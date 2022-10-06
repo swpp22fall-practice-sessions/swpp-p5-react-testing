@@ -24,13 +24,10 @@ export const fetchTodos = createAsyncThunk("todo/fetchTodos", async () => {
   return response.data;
 });
 
-export const fetchTodo = createAsyncThunk(
-  "todo/fetchTodo",
-  async (id: TodoType["id"], { dispatch }) => {
-    const response = await axios.get(`/api/todo/${id}/`);
-    return response.data ?? null;
-  }
-);
+export const fetchTodo = createAsyncThunk("todo/fetchTodo", async (id: TodoType["id"], { dispatch }) => {
+  const response = await axios.get(`/api/todo/${id}/`);
+  return response.data ?? null;
+});
 
 export const postTodo = createAsyncThunk(
   "todo/postTodo",
@@ -40,31 +37,20 @@ export const postTodo = createAsyncThunk(
   }
 );
 
-export const deleteTodo = createAsyncThunk(
-  "todo/deleteTodo",
-  async (id: TodoType["id"], { dispatch }) => {
-    await axios.delete(`/api/todo/${id}/`);
-    dispatch(todoActions.deleteTodo({ targetId: id }));
-  }
-);
+export const deleteTodo = createAsyncThunk("todo/deleteTodo", async (id: TodoType["id"], { dispatch }) => {
+  await axios.delete(`/api/todo/${id}/`);
+  dispatch(todoActions.deleteTodo({ targetId: id }));
+});
 
-export const toggleDone = createAsyncThunk(
-  "todo/toggleDone",
-  async (id: TodoType["id"], { dispatch }) => {
-    await axios.put(`/api/todo/${id}/`);
-    dispatch(todoActions.toggleDone({ targetId: id }));
-  }
-);
+export const toggleDone = createAsyncThunk("todo/toggleDone", async (id: TodoType["id"], { dispatch }) => {
+  await axios.put(`/api/todo/${id}/`);
+  dispatch(todoActions.toggleDone({ targetId: id }));
+});
 
 export const todoSlice = createSlice({
   name: "todo",
   initialState,
   reducers: {
-    getAll: (state, action: PayloadAction<{ todos: TodoType[] }>) => {},
-    getTodo: (state, action: PayloadAction<{ targetId: number }>) => {
-      const target = state.todos.find((td) => td.id === action.payload.targetId);
-      state.selectedTodo = target ?? null;
-    },
     toggleDone: (state, action: PayloadAction<{ targetId: number }>) => {
       const todo = state.todos.find((value) => value.id === action.payload.targetId);
       if (todo) {
@@ -86,7 +72,7 @@ export const todoSlice = createSlice({
       };
       state.todos.push(newTodo);
     },
-  },
+  },  
   extraReducers: (builder) => {
     // Add reducers for additional action types here, and handle loading state as needed
     builder.addCase(fetchTodos.fulfilled, (state, action) => {
