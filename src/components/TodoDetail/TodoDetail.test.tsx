@@ -1,7 +1,7 @@
 import { screen } from "@testing-library/react";
 import axios from "axios";
 import { MemoryRouter, Navigate, Route, Routes } from "react-router";
-import { renderWithProviders } from "../../test-utils/mocks";
+import { renderWithProviders } from "../../test-utils/mock";
 import TodoDetail from "./TodoDetail";
 
 const renderTodoDetail = () => {

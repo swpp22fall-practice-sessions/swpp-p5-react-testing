@@ -2,7 +2,7 @@ import { fireEvent, screen, waitFor } from "@testing-library/react";
 import axios from "axios";
 
 import NewTodo from "./NewTodo";
-import { renderWithProviders } from "../../../test-utils/mocks";
+import { renderWithProviders } from "../../../test-utils/mock";
 import * as todoSlice from "../../../store/slices/todo";
 
 const mockNavigate = jest.fn();
