@@ -73,6 +73,8 @@ describe("<NewTodo />", () => {
       content: "CONTENT",
     });
     await waitFor(() => expect(mockNavigate).not.toHaveBeenCalled());
-    await waitFor(() => expect(window.alert).toHaveBeenCalledWith("Error on post Todo"));
+    await waitFor(() =>
+      expect(window.alert).toHaveBeenCalledWith("Error on post Todo")
+    );
   });
 });
