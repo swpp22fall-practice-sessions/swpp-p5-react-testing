@@ -16,7 +16,12 @@ const renderTodoDetail = () => {
       preloadedState: {
         todo: {
           todos: [
-            { id: 3, title: "TODO_TEST_TITLE_3", content: "TODO_TEST_CONTENT_3", done: false },
+            {
+              id: 3,
+              title: "TODO_TEST_TITLE_3",
+              content: "TODO_TEST_CONTENT_3",
+              done: false,
+            },
           ],
           selectedTodo: null,
         },
