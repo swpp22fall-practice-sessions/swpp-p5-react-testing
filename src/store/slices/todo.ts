@@ -60,8 +60,6 @@ export const todoSlice = createSlice({
   name: "todo",
   initialState,
   reducers: {
-    getAll: (state, action: PayloadAction<{ todos: TodoType[] }>) => { },
-
     toggleDone: (state, action: PayloadAction<{ targetId: number }>) => {
       const todo = state.todos.find((value) => value.id === action.payload.targetId);
       if (todo) {
