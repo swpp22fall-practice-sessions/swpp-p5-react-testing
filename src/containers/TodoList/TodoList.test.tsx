@@ -3,7 +3,7 @@ import { fireEvent, render, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { MemoryRouter, Route, Routes } from "react-router";
 import { TodoState } from "../../store/slices/todo";
-import { getMockStore } from "../../test-utils/mocks";
+import { getMockStore } from "../../test-utils/mock";
 import TodoList from "./TodoList";
 
 jest.mock("../../components/Todo/Todo", ()=>(props: TodoProps)=>(

@@ -9,6 +9,6 @@ test("renders App.tsx", () => {
     <Provider store={store}><App /></Provider>
   );
   // eslint-disable-next-line testing-library/no-debugging-utils
-  screen.debug();
+  // screen.debug();
   // expect(true).toBe(false);
 });
