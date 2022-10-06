@@ -2,7 +2,7 @@ import { render, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { MemoryRouter, Route, Routes } from "react-router";
 import { TodoState } from "../../store/slices/todo";
-import { getMockStore, mockDispatch } from "../../test-utils/mocks";
+import { getMockStore } from "../../test-utils/mocks";
 import TodoDetail from "./TodoDetail";
 
 const stubInitialState: TodoState = {
@@ -10,6 +10,12 @@ const stubInitialState: TodoState = {
   selectedTodo: { id: 1, title: "TODO_TEST_TITLE_1", content: "TODO_TEST_CONTENT_1", done: false },
 };
 const mockStore = getMockStore({ todo: stubInitialState });
+
+const mockDispatch = jest.fn();
+jest.mock("react-redux", () => ({
+  ...jest.requireActual("react-redux"),
+  useDispatch: () => mockDispatch,
+}));
 
 describe("<TodoDetail />", () => {
   let todoDetail: JSX.Element;
@@ -35,11 +41,11 @@ describe("<TodoDetail />", () => {
   it("should dispatch", () => {
     render(todoDetail);
     expect(mockDispatch).toHaveBeenCalled();
-  })
+  });
 
   it("should contain selected Todo", () => {
     render(todoDetail);
     screen.getByText("TODO_TEST_TITLE_1");
-    screen.getByText("TODO_TEST_CONTENT_1")
-  })
+    screen.getByText("TODO_TEST_CONTENT_1");
+  });
 });

@@ -3,7 +3,7 @@ import { Provider } from "react-redux";
 import { MemoryRouter, Route, Routes } from "react-router";
 import { IProps as TodoProps } from "../../components/Todo/Todo";
 import { TodoState } from "../../store/slices/todo";
-import { getMockStore, mockDispatch, mockNavigate } from "../../test-utils/mocks";
+import { getMockStore } from "../../test-utils/mocks";
 import TodoList from "./TodoList";
 
 jest.mock("../../components/Todo/Todo", () => (props: TodoProps) => (
@@ -19,6 +19,18 @@ jest.mock("../../components/Todo/Todo", () => (props: TodoProps) => (
     </button>
   </div>
 ));
+
+const mockNavigate = jest.fn();
+jest.mock("react-router", () => ({
+  ...jest.requireActual("react-router"),
+  useNavigate: () => mockNavigate,
+}));
+
+const mockDispatch = jest.fn();
+jest.mock("react-redux", () => ({
+  ...jest.requireActual("react-redux"),
+  useDispatch: () => mockDispatch,
+}));
 
 const stubInitialState: TodoState = {
   todos: [
