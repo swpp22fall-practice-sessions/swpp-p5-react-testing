@@ -12,7 +12,7 @@ describe("<Todo /", () => {
         render(<Todo title={"TODO_TITLE"} done={true} />);
         screen.getByText("TODO_TITLE");
         const title = screen.getByText("TODO_TITLE");
-        expect(title.classList.contains("done")).toBe(false);
+        expect(title.classList.contains("done")).toBe(true);
         screen.getByText("Undone");
     });
     it("should render undone mark when done is false", () => {
