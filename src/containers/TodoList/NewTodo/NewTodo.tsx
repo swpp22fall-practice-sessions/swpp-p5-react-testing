@@ -23,7 +23,7 @@ export default function NewTodo() {
   const postTodoHandler = async () => {
     const data = { title: title, content: content };
     const result = await dispatch(postTodo(data));
-    if (result.type === `${postTodo.typePrefix}/fulfilled`) {
+    if (result?.type === `${postTodo.typePrefix}/fulfilled`) {
       setSubmitted(true);
     } else {
       alert("Error on post Todo");
