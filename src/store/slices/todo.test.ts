@@ -27,12 +27,16 @@ describe("todo reducer", () => {
   });
   it("should handle fetchTodos", async () => {
     axios.get = jest.fn().mockResolvedValue({ data: [fakeTodo] });
+    // console.log(store.getState().todo.todos)
     await store.dispatch(fetchTodos());
+    // console.log(store.getState().todo.todos)
     expect(store.getState().todo.todos).toEqual([fakeTodo]);
   });
   it("should handle fetchTodo", async () => {
     axios.get = jest.fn().mockResolvedValue({ data: fakeTodo });
+    // console.log(store.getState().todo.todos)
     await store.dispatch(fetchTodo(1));
+    // console.log(store.getState().todo.todos)
     expect(store.getState().todo.selectedTodo).toEqual(fakeTodo);
   });
   it("should handle deleteTodo", async () => {
@@ -51,7 +55,9 @@ describe("todo reducer", () => {
     jest.spyOn(axios, "put").mockResolvedValue({
       data: fakeTodo,
     });
+    // console.log(store.getState().todo.todos)
     await store.dispatch(toggleDone(fakeTodo.id));
+    // console.log(store.getState().todo.todos)
     expect(store.getState().todo.todos.find((v) => v.id === fakeTodo.id)?.done).toEqual(true);
   });
   it("should handle error on postTodo", async () => {
